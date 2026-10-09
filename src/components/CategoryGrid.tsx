@@ -1,25 +1,34 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+
+// Static poster images
 import hero from "@/assets/hero-kiwi.jpg";
 import melon from "@/assets/p-watermelon.jpg";
 import peach from "@/assets/p-peach.jpg";
 import vanilla from "@/assets/p-vanilla.jpg";
 
+// HTML5 Video assets
+import kiwiVideo from "@/assets/vdos/kiwi.mp4";
+import watermelonVideo from "@/assets/vdos/watermelon.mp4";
+import peachVideo from "@/assets/vdos/peach.mp4";
+import ambreVideo from "@/assets/vdos/ambre.mp4";
+
 interface CategoryItem {
   t: string;
   img: string;
+  video: string;
   bg: string;
   tag: string;
 }
 
 const leftCategories: CategoryItem[] = [
-  { t: "EDP", tag: "Eau de Parfum", img: hero, bg: "bg-pastel" },
-  { t: "Gifting", tag: "Curated Sets", img: peach, bg: "bg-peach-gradient" },
+  { t: "EDP", tag: "Eau de Parfum", img: hero, video: kiwiVideo, bg: "bg-pastel" },
+  { t: "Peach", tag: "Curated Sets", img: peach, video: peachVideo, bg: "bg-peach-gradient" },
 ];
 
 const rightCategories: CategoryItem[] = [
-  { t: "Attars", tag: "Pure Oils", img: melon, bg: "bg-melon" },
-  { t: "Minis", tag: "Pocket Spritz", img: vanilla, bg: "bg-cream" },
+  { t: "Attars", tag: "Pure Oils", img: melon, video: watermelonVideo, bg: "bg-melon" },
+  { t: "Ambre", tag: "Pocket Spritz", img: vanilla, video: ambreVideo, bg: "bg-cream" },
 ];
 
 export default function CategoryGrid() {
@@ -33,22 +42,22 @@ export default function CategoryGrid() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // 1. Asymmetrical Scroll Parallax
+  // 1. Asymmetrical Scroll Parallax Tracking
   const { scrollYProgress } = useScroll({
     target: gridRef,
     offset: ["start end", "end start"],
   });
 
-  // Left Column: slight upward translation [0, -80]
-  const yLeft = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  // Right Column: slight downward / offset translation [0, 40]
-  const yRight = useTransform(scrollYProgress, [0, 1], [0, 40]);
+  // Left Column: slight upward translation [0, -120]
+  const yLeft = useTransform(scrollYProgress, [0, 1], [0, -120]);
+  // Right Column: slower downward translation [0, 60] to break symmetry
+  const yRight = useTransform(scrollYProgress, [0, 1], [0, 60]);
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-20 md:px-8 overflow-hidden">
       <div className="text-center mb-14">
         <span className="pill mb-3 inline-block bg-muted px-4 py-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-          Curated Lines
+          ONE OF NONE
         </span>
         <h2 className="text-4xl md:text-5xl font-medium tracking-tight">
           Find your <em>format</em>
@@ -59,7 +68,7 @@ export default function CategoryGrid() {
         ref={gridRef}
         className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto items-start pt-8 pb-20"
       >
-        {/* Left Column (Upward Parallax) */}
+        {/* Left Column (EDP, Peach - Upward Parallax) */}
         <motion.div
           style={{
             y: isMobile ? 0 : yLeft,
@@ -73,16 +82,19 @@ export default function CategoryGrid() {
               href="#shop"
               className={`${c.bg} group overflow-hidden rounded-[2.5rem] relative aspect-[4/5] flex items-end p-8 shadow-md transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ring-2 ring-transparent hover:ring-foreground/10 block`}
             >
-              {/* Deep Hover Micro-Interaction: 800ms cubic-bezier zoom */}
-              <img
-                src={c.img}
-                alt={c.t}
-                loading="lazy"
+              {/* Auto-Playing Looping Video with Static Poster fallback & Deep Hover Zoom */}
+              <video
+                src={c.video}
+                poster={c.img}
+                autoPlay
+                loop
+                muted
+                playsInline
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110"
               />
               {/* Subtle background overlay darkens slightly on hover to make white text pop */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-85 group-hover:opacity-95 group-hover:bg-black/20 transition-all duration-500" />
-              <div className="relative z-10">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-85 group-hover:opacity-95 group-hover:bg-black/20 transition-all duration-500 pointer-events-none" />
+              <div className="relative z-10 pointer-events-none">
                 <span className="pill mb-2 inline-block bg-white/20 backdrop-blur-md px-3 py-0.5 text-xs font-semibold uppercase tracking-wider text-white">
                   {c.tag}
                 </span>
@@ -94,7 +106,7 @@ export default function CategoryGrid() {
           ))}
         </motion.div>
 
-        {/* Right Column (Offset Downward Parallax to Break Symmetry) */}
+        {/* Right Column (Attars, Ambre - Downward Parallax to Break Symmetry) */}
         <motion.div
           style={{
             y: isMobile ? 0 : yRight,
@@ -108,16 +120,19 @@ export default function CategoryGrid() {
               href="#shop"
               className={`${c.bg} group overflow-hidden rounded-[2.5rem] relative aspect-[4/5] flex items-end p-8 shadow-md transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ring-2 ring-transparent hover:ring-foreground/10 block`}
             >
-              {/* Deep Hover Micro-Interaction: 800ms cubic-bezier zoom */}
-              <img
-                src={c.img}
-                alt={c.t}
-                loading="lazy"
+              {/* Auto-Playing Looping Video with Static Poster fallback & Deep Hover Zoom */}
+              <video
+                src={c.video}
+                poster={c.img}
+                autoPlay
+                loop
+                muted
+                playsInline
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-[800ms] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-110"
               />
               {/* Subtle background overlay darkens slightly on hover to make white text pop */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-85 group-hover:opacity-95 group-hover:bg-black/20 transition-all duration-500" />
-              <div className="relative z-10">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-85 group-hover:opacity-95 group-hover:bg-black/20 transition-all duration-500 pointer-events-none" />
+              <div className="relative z-10 pointer-events-none">
                 <span className="pill mb-2 inline-block bg-white/20 backdrop-blur-md px-3 py-0.5 text-xs font-semibold uppercase tracking-wider text-white">
                   {c.tag}
                 </span>
