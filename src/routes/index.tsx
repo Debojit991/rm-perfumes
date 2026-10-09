@@ -10,6 +10,13 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import AutoScroll from "embla-carousel-auto-scroll";
+import BestsellersFramerMotion from "@/components/BestsellersFramerMotion";
+import CategoryGrid from "@/components/CategoryGrid";
+import HeroBanner from "@/components/HeroBanner";
+import ShopByScent from "@/components/ShopByScent";
+import Wave from "@/components/Wave";
+import MagneticButton from "@/components/MagneticButton";
+import SmellJuiceMarquee from "@/components/SmellJuiceMarquee";
 import hero from "@/assets/hero-kiwi.jpg";
 import melon from "@/assets/p-watermelon.jpg";
 import peach from "@/assets/p-peach.jpg";
@@ -20,6 +27,10 @@ import vProd2 from "@/assets/vdos/v_prod2.mp4";
 import vProd3 from "@/assets/vdos/v_prod3.mp4";
 import vProd4 from "@/assets/vdos/v_prod4.mp4";
 import logo from "@/assets/logo.png";
+import kiwiVid from "@/assets/vdos/kiwi.mp4";
+import watermelonVid from "@/assets/vdos/watermelon.mp4";
+import peachVid from "@/assets/vdos/peach.mp4";
+import ambreVid from "@/assets/vdos/ambre.mp4";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -36,19 +47,29 @@ export const Route = createFileRoute("/")({
 });
 
 type Product = {
-  id: number; name: string; notes: string; img: string; price: number; was?: number;
-  rating: number; reviews: number; badge?: "sale" | "best" | "new"; cat: string; bg: string;
+  id: number;
+  name: string;
+  notes: string;
+  img: string;
+  video?: string | undefined;
+  price: number;
+  was?: number | undefined;
+  rating: number;
+  reviews: number;
+  badge?: "sale" | "best" | "new" | undefined;
+  cat: string;
+  bg: string;
 };
 
 const products: Product[] = [
-  { id: 1, name: "Kiwi Crush", notes: "Kiwi · Lime · Green tea", img: hero, price: 1299, rating: 4.8, reviews: 412, badge: "best", cat: "EDP", bg: "bg-pastel" },
-  { id: 2, name: "Watermelon Berry", notes: "Watermelon · Strawberry · Musk", img: melon, price: 1099, was: 1499, rating: 4.7, reviews: 289, badge: "sale", cat: "EDP", bg: "bg-melon" },
-  { id: 3, name: "Peach Please", notes: "Peach · Apricot · Neroli", img: peach, price: 1199, rating: 4.9, reviews: 530, badge: "best", cat: "EDP", bg: "bg-peach-gradient" },
-  { id: 4, name: "Ambre Caramel", notes: "Vanilla · Caramel · Cocoa", img: vanilla, price: 899, was: 1199, rating: 4.6, reviews: 174, badge: "sale", cat: "Attar", bg: "bg-cream" },
-  { id: 5, name: "Melon Mist Attar", notes: "Melon · Rose · Oud", img: melon, price: 749, rating: 4.5, reviews: 98, badge: "new", cat: "Attar", bg: "bg-melon" },
-  { id: 6, name: "Citrus Pop Duo", notes: "Gift set · 2 × 30ml", img: hero, price: 1999, was: 2599, rating: 4.8, reviews: 211, badge: "sale", cat: "Gifting", bg: "bg-pastel" },
-  { id: 7, name: "Peach Fizz Mini", notes: "Peach · Soda · Pear", img: peach, price: 599, rating: 4.7, reviews: 143, badge: "new", cat: "EDP", bg: "bg-peach-gradient" },
-  { id: 8, name: "Gourmand Gift Box", notes: "Gift set · 3 × 10ml", img: vanilla, price: 1499, rating: 4.9, reviews: 320, badge: "best", cat: "Gifting", bg: "bg-cream" },
+  { id: 1, name: "Kiwi Crush", notes: "Kiwi · Lime · Green tea", img: hero, video: kiwiVid, price: 1299, rating: 4.8, reviews: 412, badge: "best", cat: "EDP", bg: "bg-pastel" },
+  { id: 2, name: "Watermelon Berry", notes: "Watermelon · Strawberry · Musk", img: melon, video: watermelonVid, price: 1099, was: 1499, rating: 4.7, reviews: 289, badge: "sale", cat: "EDP", bg: "bg-melon" },
+  { id: 3, name: "Peach Please", notes: "Peach · Apricot · Neroli", img: peach, video: peachVid, price: 1199, rating: 4.9, reviews: 530, badge: "best", cat: "EDP", bg: "bg-peach-gradient" },
+  { id: 4, name: "Ambre Caramel", notes: "Vanilla · Caramel · Cocoa", img: vanilla, video: ambreVid, price: 899, was: 1199, rating: 4.6, reviews: 174, badge: "sale", cat: "Attar", bg: "bg-cream" },
+  { id: 5, name: "Melon Mist Attar", notes: "Melon · Rose · Oud", img: melon, video: watermelonVid, price: 749, rating: 4.5, reviews: 98, badge: "new", cat: "Attar", bg: "bg-melon" },
+  { id: 6, name: "Citrus Pop Duo", notes: "Gift set · 2 × 30ml", img: hero, video: kiwiVid, price: 1999, was: 2599, rating: 4.8, reviews: 211, badge: "sale", cat: "Gifting", bg: "bg-pastel" },
+  { id: 7, name: "Peach Fizz Mini", notes: "Peach · Soda · Pear", img: peach, video: peachVid, price: 599, rating: 4.7, reviews: 143, badge: "new", cat: "EDP", bg: "bg-peach-gradient" },
+  { id: 8, name: "Gourmand Gift Box", notes: "Gift set · 3 × 10ml", img: vanilla, video: ambreVid, price: 1499, rating: 4.9, reviews: 320, badge: "best", cat: "Gifting", bg: "bg-cream" },
 ];
 
 const slides = [
@@ -60,14 +81,6 @@ const slides = [
 ];
 
 const inr = (n: number) => `₹${n.toLocaleString("en-IN")}`;
-
-function Wave({ fill, flip }: { fill: string; flip?: boolean }) {
-  return (
-    <svg viewBox="0 0 1440 80" preserveAspectRatio="none" className={`block h-12 w-full md:h-20 ${fill} ${flip ? "rotate-180" : ""}`} aria-hidden>
-      <path fill="currentColor" d="M0,40 C240,90 480,0 720,30 C960,60 1200,10 1440,40 L1440,80 L0,80 Z" />
-    </svg>
-  );
-}
 
 function Badge({ kind }: { kind: NonNullable<Product["badge"]> }) {
   const map = {
@@ -85,7 +98,7 @@ function ScrollReveal({ children, index }: { children: React.ReactNode, index: n
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
+      if (entry?.isIntersecting) {
         setIsVisible(true);
         observer.disconnect();
       }
@@ -117,24 +130,6 @@ function Index() {
   const [slide, setSlide] = useState(0);
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
-  const [activeScent, setActiveScent] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const cards = Array.from(document.querySelectorAll('.scent-card'));
-      let currentIndex = 0;
-      cards.forEach((card, index) => {
-        const rect = card.getBoundingClientRect();
-        if (rect.top < 300) {
-          currentIndex = index;
-        }
-      });
-      setActiveScent(currentIndex);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     const t = setInterval(() => setSlide((s) => (s + 1) % slides.length), 5500);
@@ -154,7 +149,7 @@ function Index() {
 
   const bestSellers = products.filter(p => p.badge === "best" || p.badge === "sale").slice(0, 4);
   
-  const naList = products.filter(p => p.badge === "new" || p.id > 4);
+  const naList = products;
   // Triple the array to completely eliminate any looping gaps on large screens
   const newArrivals = [...naList, ...naList.map(p => ({...p, id: p.id + 100})), ...naList.map(p => ({...p, id: p.id + 200}))];
 
@@ -230,56 +225,17 @@ function Index() {
         </div>
       )}
 
-      {/* 1. Hero (Full Width Video Banner) */}
-      <section className="relative h-[85vh] min-h-[600px] w-full overflow-hidden bg-black flex flex-col justify-end">
-        {/* Video Background */}
-        <video key={s.vid + slide} src={s.vid} autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover animate-in fade-in duration-1000" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-        
-        {/* Content */}
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 md:px-8 pb-24 pt-32 text-white">
-          <div key={slide} className="max-w-2xl animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <span className="pill mb-6 inline-block bg-white/20 backdrop-blur-md px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-white border border-white/30">{s.tag}</span>
-            <h1 className="text-5xl font-medium leading-[1.05] md:text-7xl lg:text-8xl">{s.title}</h1>
-            <p className="mt-6 text-lg md:text-xl text-white/90 font-light">{s.sub}</p>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a href="#shop" className="pill bg-white px-10 py-4 font-semibold text-black transition hover:scale-105 shadow-xl">Shop Now</a>
-              <a href="#lines" className="pill bg-white/10 backdrop-blur-md border border-white/20 px-10 py-4 font-semibold text-white transition hover:bg-white/20">Discover More</a>
-            </div>
-          </div>
-        </div>
-
-        {/* Controls */}
-        <div className="absolute bottom-[4.5rem] right-4 md:right-8 z-10 flex gap-3">
-          <button aria-label="Previous" onClick={() => setSlide((slide + slides.length - 1) % slides.length)} className="pill bg-white/20 backdrop-blur-md p-3 text-white border border-white/20 transition hover:bg-white/40"><ChevronLeft className="h-5 w-5" /></button>
-          <button aria-label="Next" onClick={() => setSlide((slide + 1) % slides.length)} className="pill bg-white/20 backdrop-blur-md p-3 text-white border border-white/20 transition hover:bg-white/40"><ChevronRight className="h-5 w-5" /></button>
-        </div>
-        
-        <div className="absolute bottom-[5.5rem] left-4 md:left-8 z-10 flex gap-2">
-          {slides.map((_, i) => (
-            <button key={i} aria-label={`Slide ${i + 1}`} onClick={() => setSlide(i)} className={`pill h-1.5 transition-all ${i === slide ? "w-8 bg-white" : "w-3 bg-white/40"}`} />
-          ))}
-        </div>
-        
-        <div className="absolute bottom-0 left-0 w-full z-10 translate-y-1">
-          <Wave fill="text-background" />
-        </div>
-      </section>
+      {/* 1. Hero (Clean Full Width Video Banner) */}
+      <HeroBanner slides={slides} slide={slide} setSlide={setSlide} />
+      <div className="relative w-full z-10 translate-y-1">
+        <Wave fill="text-background" />
+      </div>
 
       {/* 2. Best Sellers */}
-      <section id="best-sellers" className="bg-background pt-10">
-        <div className="mx-auto max-w-7xl px-4 py-8 md:px-8">
-          <h2 className="text-4xl md:text-5xl text-center">The <em>Bestsellers</em></h2>
-          <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-2 md:px-0">
-            {bestSellers.map((p) => (
-              <Card key={p.id} p={p} add={add} wish={wish} setWish={setWish} pop />
-            ))}
-          </div>
-          <div className="mt-12 flex justify-center">
-             <a href="#shop" className="border-b-2 border-foreground pb-1 font-medium hover:text-hot hover:border-hot transition-colors">VIEW ALL BESTSELLERS</a>
-          </div>
-        </div>
-      </section>
+      <BestsellersFramerMotion
+        onAddToCart={(p) => add(p.id)}
+        onToggleWishlist={(id) => setWish((w) => w.includes(id) ? w.filter((x) => x !== id) : [...w, id])}
+      />
 
       {/* 2b. New Arrivals */}
       <section id="new-arrivals" className="bg-background pt-4 pb-10">
@@ -295,36 +251,23 @@ function Index() {
             <CarouselContent className="py-4">
               {newArrivals.map((p) => (
                 <CarouselItem key={p.id} className="pl-4 md:pl-6 basis-[85%] sm:basis-[45%] md:basis-[30%] lg:basis-[22%]">
-                  <Card p={p} add={add} wish={wish} setWish={setWish} pop />
+                  <Card p={p} add={add} wish={wish} setWish={setWish} pop videoMode="hover" />
                 </CarouselItem>
               ))}
             </CarouselContent>
           </Carousel>
         </div>
         <div className="mx-auto max-w-7xl px-4 md:px-8 mt-12 flex justify-center">
-           <a href="#shop" className="border-b-2 border-foreground pb-1 font-medium hover:text-hot hover:border-hot transition-colors">VIEW ALL NEW ARRIVALS</a>
+          <MagneticButton>
+            <a href="#shop" className="border-b-2 border-foreground pb-1 font-medium hover:text-hot hover:border-hot transition-colors inline-block">
+              VIEW ALL NEW ARRIVALS
+            </a>
+          </MagneticButton>
         </div>
       </section>
 
       {/* 3. 4-Grid Categories */}
-      <section className="mx-auto max-w-7xl px-4 py-16 md:px-8 overflow-hidden">
-        <div className="grid grid-cols-2 gap-4 md:gap-6 max-w-5xl mx-auto p-4 -m-4 items-start">
-          {[
-            { t: "EDP", img: hero, bg: "bg-pastel" },
-            { t: "Attars", img: melon, bg: "bg-melon" },
-            { t: "Gifting", img: peach, bg: "bg-peach-gradient" },
-            { t: "Minis", img: vanilla, bg: "bg-cream" },
-          ].map((c, idx) => (
-            <ScrollReveal key={c.t} index={idx}>
-              <a href="#shop" className={`${c.bg} group overflow-hidden rounded-[2rem] relative aspect-square flex items-end p-6 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl ring-2 ring-transparent hover:ring-foreground/10 w-full h-full block`}>
-                <img src={c.img} alt={c.t} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <h3 className="text-3xl text-white relative z-10 font-serif italic drop-shadow-md group-hover:translate-x-1 transition-transform duration-500">{c.t}</h3>
-              </a>
-            </ScrollReveal>
-          ))}
-        </div>
-      </section>
+      <CategoryGrid />
 
       {/* 4. Promo banner */}
       <section className="mx-auto max-w-7xl px-4 py-8 md:px-8">
@@ -333,56 +276,18 @@ function Index() {
             <span className="pill bg-sale px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-destructive-foreground">Limited · 25% off</span>
             <h2 className="mt-5 text-4xl leading-tight md:text-5xl">The Peach Nectar collection is <em>ripe</em>.</h2>
             <p className="mt-4 text-foreground/75">Sun-warmed peach, apricot and a hint of neroli. Bottled sunshine for every day.</p>
-            <a href="#shop" className="pill mt-8 inline-block bg-foreground px-8 py-3.5 font-medium text-background hover:scale-105 transition-transform">Shop the line</a>
+            <MagneticButton>
+              <a href="#shop" className="pill mt-8 inline-block bg-foreground px-8 py-3.5 font-medium text-background hover:scale-105 transition-transform">
+                Shop the line
+              </a>
+            </MagneticButton>
           </div>
           <img src={peach} alt="Peach Please perfume" loading="lazy" className="h-full max-h-[480px] w-full object-cover" />
         </div>
       </section>
 
-      {/* 5. Shop by Scent (Stacked Cards Animation) */}
-      <section className="py-16 relative">
-        <div className="absolute inset-0 z-0">
-          <div className="sticky top-0 h-screen w-full">
-            {["from-kiwi/60", "from-melon/60", "from-peach/60", "from-cream/80"].map((grad, i) => (
-              <div 
-                key={i} 
-                className={`absolute inset-0 bg-gradient-to-b ${grad} to-background transition-opacity duration-1000 ${activeScent === i ? 'opacity-100' : 'opacity-0'}`} 
-              />
-            ))}
-          </div>
-        </div>
-        <div className="mx-auto max-w-7xl px-4 md:px-8 relative z-10">
-          <h2 className="text-center text-4xl md:text-5xl mb-12">Shop by <em>scent</em></h2>
-          <div className="relative flex flex-col items-center w-full">
-            {[
-              { n: "Citrus", notes: "Zesty, green, wake-up energy. Features bright notes of Bergamot, Lime, and Mandarin to instantly refresh your senses.", i: hero, bg: "bg-kiwi" },
-              { n: "Sweet", notes: "Juicy, playful & a little extra. A delicious blend of Watermelon, Strawberry, and soft Musk for an addictive trail.", i: melon, bg: "bg-melon" },
-              { n: "Floral", notes: "Warm, golden, blooming fields. Elegant notes of Jasmine, Rose, and Neroli that evoke a sunny afternoon walk.", i: peach, bg: "bg-peach-gradient" },
-              { n: "Gourmand", notes: "Rich, edible, cozy comfort. Decadent layers of Caramel, Cocoa, and Tonka Bean that smell good enough to eat.", i: vanilla, bg: "bg-cream" }
-            ].map((s, idx, arr) => (
-              <div 
-                key={s.n} 
-                className={`scent-card sticky w-full max-w-4xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row h-auto md:h-[450px] border border-foreground/5 ${idx === arr.length - 1 ? 'mb-0' : 'mb-[15vh]'}`}
-                style={{ 
-                  zIndex: 10 + idx, 
-                  top: `calc(120px + ${idx * 40}px)` 
-                }}
-              >
-                 <div className={`${s.bg} w-full md:w-1/2 p-10 md:p-16 flex flex-col justify-center`}>
-                    <h3 className="text-4xl md:text-5xl font-serif italic mb-6">{s.n}</h3>
-                    <p className="text-lg text-foreground/80 leading-relaxed mb-8">{s.notes}</p>
-                    <a href="#shop" className="pill w-fit bg-foreground px-8 py-3.5 font-medium text-background transition hover:scale-105">
-                      Explore {s.n}
-                    </a>
-                 </div>
-                 <div className={`${s.bg} w-full md:w-1/2 h-[300px] md:h-full relative`}>
-                    <img src={s.i} alt={s.n} className="w-full h-full object-cover mix-blend-multiply opacity-90" />
-                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* 5. Shop by Scent (Sticky Stacking Cards) */}
+      <ShopByScent />
 
       {/* 6. Editor's Picks */}
       <Wave fill="text-pastel" flip />
@@ -390,28 +295,23 @@ function Index() {
         <div className="mx-auto max-w-7xl px-4 md:px-8">
           <h2 className="text-center text-4xl md:text-5xl mb-10">Our Editor's <em>Picks</em></h2>
           <div className="grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-4">
-            {products.slice(0, 4).reverse().map((p) => <Card key={p.id} p={{...p, id: p.id+10}} add={add} wish={wish} setWish={setWish} />)}
+            {products.slice(0, 4).reverse().map((p) => (
+              <Card
+                key={p.id}
+                p={{ ...p, id: p.id + 10 }}
+                add={add}
+                wish={wish}
+                setWish={setWish}
+                videoMode="autoplay"
+              />
+            ))}
           </div>
         </div>
       </section>
       <Wave fill="text-pastel" />
 
-      {/* 7. UGC / Heritage */}
-      <section className="bg-background pt-8 pb-16">
-        <div className="mx-auto max-w-7xl px-4 md:px-8">
-          <h2 className="text-center text-4xl md:text-5xl">#SmellJuicé</h2>
-          <p className="mt-3 text-center text-foreground/75 mb-10">Real people, real spritzes. Tag us to be featured.</p>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {[hero, melon, peach, vanilla].map((img, i) => (
-              <div key={i} className="relative overflow-hidden rounded-[1.75rem] group">
-                <img src={img} alt="Customer post" loading="lazy" className="aspect-[3/4] w-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
-                <span className="pill absolute bottom-3 left-3 bg-card/90 px-3 py-1 text-xs font-medium">@{["aanya.vibes", "rohan.daily", "mira_glows", "kabirspritz"][i]}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* 7. #SmellJuice Infinite Marquee */}
+      <SmellJuiceMarquee />
 
       {/* 8. USPs */}
       <section className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-12 md:grid-cols-4 md:px-8 border-t border-foreground/10">
@@ -508,14 +408,93 @@ function Index() {
   );
 }
 
-function Card({ p, add, wish, setWish, pop }: { p: Product; add: (id: number) => void; wish: number[]; setWish: (f: (w: number[]) => number[]) => void; pop?: boolean }) {
+function Card({
+  p,
+  add,
+  wish,
+  setWish,
+  pop,
+  videoMode = "hover",
+}: {
+  p: Product;
+  add: (id: number) => void;
+  wish: number[];
+  setWish: (f: (w: number[]) => number[]) => void;
+  pop?: boolean | undefined;
+  videoMode?: "hover" | "autoplay" | undefined;
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const liked = wish.includes(p.id);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    if (videoMode === "hover" && videoRef.current) {
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    if (videoMode === "hover" && videoRef.current) {
+      videoRef.current.pause();
+    }
+  };
+
   return (
-    <div className={`group flex flex-col rounded-[2rem] bg-card p-3 shadow-sm transition-all duration-300 ${pop ? "hover:-translate-y-3 hover:shadow-2xl hover:scale-[1.03] hover:ring-2 hover:ring-foreground/5 z-10 hover:z-20 relative bg-background" : "hover:-translate-y-1 hover:shadow-xl"}`}>
+    <div
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={`group flex flex-col rounded-[2rem] bg-card p-3 shadow-sm transition-all duration-300 ${
+        pop
+          ? "hover:-translate-y-3 hover:shadow-2xl hover:scale-[1.03] hover:ring-2 hover:ring-foreground/5 z-10 hover:z-20 relative bg-background"
+          : "hover:-translate-y-1 hover:shadow-xl"
+      }`}
+    >
       <div className={`${p.bg} relative overflow-hidden rounded-[1.5rem]`}>
-        <img src={p.img} alt={p.name} loading="lazy" width={1024} height={1024} className="aspect-square w-full object-cover transition duration-500 group-hover:scale-105" />
-        <div className="absolute left-3 top-3">{p.badge && <Badge kind={p.badge} />}</div>
-        <button aria-label="Wishlist" onClick={() => setWish((w) => (liked ? w.filter((x) => x !== p.id) : [...w, p.id]))} className="pill absolute right-3 top-3 bg-card/90 p-2 transition-transform hover:scale-110">
+        {videoMode === "autoplay" && p.video ? (
+          <video
+            src={p.video}
+            poster={p.img}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="aspect-square h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-108 group-hover:scale-[1.08]"
+          />
+        ) : (
+          <>
+            <img
+              src={p.img}
+              alt={p.name}
+              loading="lazy"
+              width={1024}
+              height={1024}
+              className="aspect-square w-full object-cover transition duration-500 group-hover:scale-105"
+            />
+            {p.video && (
+              <video
+                ref={videoRef}
+                src={p.video}
+                loop
+                muted
+                playsInline
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 pointer-events-none ${
+                  isHovered ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            )}
+          </>
+        )}
+        <div className="absolute left-3 top-3 z-10">{p.badge && <Badge kind={p.badge} />}</div>
+        <button
+          aria-label="Wishlist"
+          onClick={() => setWish((w) => (liked ? w.filter((x) => x !== p.id) : [...w, p.id]))}
+          className="pill absolute right-3 top-3 z-10 bg-card/90 p-2 transition-transform hover:scale-110"
+        >
           <Heart className={`h-4 w-4 ${liked ? "fill-hot text-hot" : ""}`} />
         </button>
       </div>
@@ -528,7 +507,12 @@ function Card({ p, add, wish, setWish, pop }: { p: Product; add: (id: number) =>
         </div>
         <div className="mt-2 flex items-baseline gap-2">
           <span className="font-semibold">{inr(p.price)}</span>
-          {p.was && <><span className="text-sm text-muted-foreground line-through">{inr(p.was)}</span><span className="text-xs font-semibold text-sale">-{Math.round((1 - p.price / p.was) * 100)}%</span></>}
+          {p.was && (
+            <>
+              <span className="text-sm text-muted-foreground line-through">{inr(p.was)}</span>
+              <span className="text-xs font-semibold text-sale">-{Math.round((1 - p.price / p.was) * 100)}%</span>
+            </>
+          )}
         </div>
         <button onClick={() => add(p.id)} className="pill mt-auto w-full bg-primary py-2.5 text-sm font-medium transition hover:bg-kiwi md:mt-4">Add to bag</button>
       </div>
